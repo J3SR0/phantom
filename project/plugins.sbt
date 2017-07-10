@@ -28,11 +28,13 @@ def isScala210: Boolean = scalaTravisEnv.exists("2.10.6" ==)
 lazy val isCi = sys.env.get("CI").exists("true" == )
 
 lazy val Versions = new {
+  val jdkVersion = sys.props("java.specification.version")
   val scrooge = if (isCi) {
-    if (sys.props("java.specification.version") == "1.8" && !isScala210) "4.14.0" else "4.7.0"
+    if (jdkVersion == "1.8" && !isScala210) "4.14.0" else "4.7.0"
   } else {
-    if (sys.props("java.specification.version") == "1.8") "4.14.0" else "4.7.0"
+    if (jdkVersion == "1.8") "4.14.0" else "4.7.0"
   }
+  println(s"Scrooge version in use $scrooge")
 }
 
 addSbtPlugin("org.scoverage" %% "sbt-scoverage" % "1.5.0")
