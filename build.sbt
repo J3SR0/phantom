@@ -16,6 +16,7 @@
 import sbt.Keys._
 import sbt._
 import com.twitter.sbt._
+import sbt.Defaults._
 
 lazy val Versions = new {
   val logback = "1.2.3"
@@ -108,7 +109,9 @@ val sharedSettings: Seq[Def.Setting[_]] = Defaults.coreDefaultSettings ++ Seq(
     "Twitter Repository" at "http://maven.twttr.com",
     Resolver.typesafeRepo("releases"),
     Resolver.sonatypeRepo("releases"),
-    Resolver.jcenterRepo
+    Resolver.jcenterRepo,
+    Resolver.bintrayIvyRepo("twittercsl", "sbt-plugins"),
+    Resolver.bintrayRepo("twittercsl", "sbt-plugins")
   ),
   logLevel in ThisBuild := Level.Info,
   libraryDependencies ++= Seq(
@@ -264,6 +267,7 @@ lazy val phantomThrift = (project in file("phantom-thrift"))
     moduleName := "phantom-thrift",
     addCompilerPlugin("org.scalamacros" % "paradise" % Versions.macroParadise cross CrossVersion.full),
     libraryDependencies ++= Seq(
+      sbtPluginExtra("com.twiter" %% "sbt-scrooge-plugin" % Versions.scrooge(scalaVersion.value), "0.13.15", "2.10.6"),
       "org.typelevel" %% "macro-compat" % Versions.macrocompat,
       "org.scala-lang" % "scala-compiler" % scalaVersion.value % "provided",
       "org.apache.thrift"            % "libthrift"                          % Versions.thrift,
